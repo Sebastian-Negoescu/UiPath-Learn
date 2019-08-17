@@ -51,7 +51,7 @@
         "nicName": "[concat(variables('vnet_name'), '-nic')]",
         "vnet_prefix": "10.0.0.0/16",
         "subnet_prefix": "10.0.0.0/24",
-        "pipName": "[toLower(concat(variables('vnet_name'), 'pip'))]",
+        "pipName": "[toLower(concat(variables('vnet_name'), '-pip'))]",
         "vmName": "sebinegovm"
     },
     "resources": [
@@ -95,7 +95,7 @@
                     "domainNameLabel": "[parameters('pipDnsName')]"
                 },
                 "publicIPAddressVersion": "IPv4",
-                "publicIPAllocationMethod": "Dynamic"
+                "publicIPAllocationMethod": "Static"
             }
         },
         {
@@ -113,7 +113,7 @@
                         "name": "ipConfig1",
                         "properties": {
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnet_name'), '/subnets/', variables('subnet_name')))]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnet_name'), variables('subnet_name'))]"
                             },
                             "publicIPAddress": {
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('pipName'))]"
@@ -134,6 +134,9 @@
                 "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
             ],
             "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vm_size')]"
+                },
                 "osProfile": {
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]",
@@ -151,13 +154,15 @@
                         "version": "latest"
                     },
                     "osDisk": {
-                        "createOption": "FromImage"
+                        "createOption": "FromImage",
+                        "name": "[concat(variables('vmName'), '-OSDisk')]"
                     },
                     "dataDisks": [
                         {
                             "diskSizeGB": 1023,
                             "lun": 0,
-                            "createOption": "Empty"
+                            "createOption": "Empty",
+                            "name": "[concat(variables('vmName'), '-DataDisk')]"
                         }
                     ]
                 },
