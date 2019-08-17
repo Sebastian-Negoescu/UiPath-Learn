@@ -1,3 +1,3 @@
 #!/bin/sh
-touch ~/helloSebi.txt
-echo "Hello Sebi!" > ~/helloSebi.txt
+touch /home/sebinego/helloSebi.txt
+echo "Hello Sebi!" > /home/sebinego/helloSebi.txt
