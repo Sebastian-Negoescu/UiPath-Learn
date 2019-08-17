@@ -1,0 +1,20 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "adminUsername": {
+            "value": "sebinego"
+        },
+        "sshKey": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/1e3572b9-ed28-4477-932c-8931c4d7cb56/resourceGroups/UiPath-Learn-KeyVault/providers/Microsoft.KeyVault/vaults/UiPath-Learn-KeyVault"
+                },
+                "secretName": "linuxSSHKey"
+            }
+        },
+        "pipDnsName": {
+            "value": "sebinegodnslinux"
+        }
+    }
+}
