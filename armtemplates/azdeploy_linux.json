@@ -203,11 +203,11 @@
                 "typeHandlerVersion": "2.0",
                 "settings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/hello.sh"
+                        "https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/helloSebi.sh"
                     ]
                 },
                 "protectedSettings": {
-                    "commandToExecute": "sh hello.sh"
+                    "commandToExecute": "sh helloSebi.sh"
                 }
             }
         }
