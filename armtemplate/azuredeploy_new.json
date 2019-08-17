@@ -41,6 +41,19 @@
             "metadata": {
                 "description": "Prefix for the Storage Account Name."
             }
+        },
+        "winOSVersion": {
+            "type": "string",
+            "defaultValue": "2016-Datacenter",
+            "allowedValues": [
+                "2008-R2-SP1",
+                "2012-Datacenter",
+                "2012-R2-Datacenter",
+                "2016-Nano-Server",
+                "2016-Datacenter-with-Containers",
+                "2016-Datacenter",
+                "2019-Datacenter"                        
+            ]
         }
     },
     "variables": {
@@ -148,9 +161,9 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "publisher": "MicrosoftWindowsDesktop",
-                        "offer": "Windows-10",
-                        "sku": "rs5-pro",
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "[parameters('winOSVersion')]",
                         "version": "latest"
                     },
                     "osDisk": {
@@ -180,6 +193,11 @@
                     }
                 }
             }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2019-03-01",
+            "name": ""
         }
     ],
     "outputs": {
