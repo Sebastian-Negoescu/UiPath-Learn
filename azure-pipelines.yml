@@ -7,8 +7,12 @@ variables:
   location: 'West Europe'
   rgName: 'UiPath-Learn'
   subscription: 'loginsp'
-  templateUrl: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_win.json'
-  parametersUrl: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_win.parameters.json'
+  templateUrl: 
+    win: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_win.json'
+    lin: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_linux.json'
+  parametersUrl: 
+    win: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_win.parameters.json'
+    lin: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_linux.parameters.json'
 
 # Starting the Resource Creation phase
 jobs:
@@ -19,15 +23,30 @@ jobs:
   steps:
   - task: AzureResourceGroupDeployment@2
     name: win_deploy
-    displayName: "Deploying the Resources for Windows"
+    displayName: "Deploying the Resources for Windows."
     inputs:
       azureSubscription: $(subscription)
       resourceGroupName: $(rgName)
       action: Create Or Update Resource Group
       templateLocation: URL of the file
-      csmFileLink: $(templateUrl)
-      csmParametersFileLink: $(parametersUrl)
+      csmFileLink: $(templateUrl.win)
+      csmParametersFileLink: $(parametersUrl.win)
       deployMentMode: 'Incremental'
       location: $(location)    
-
+- job: deployment_linux
+  displayName: 'Deployment of Linux'
+  pool:
+    vmAgent: 'Ubuntu-16.04'
+  steps:
+  - task: AzureResourceGroupDeployment@2
+    displayName: "Deploying the Resources for Linux."
+    inputs:
+      azureSubscription: $(subscription)
+      resourceGroupName: $(rgName)
+      location: $(location)
+      action: Create Or Update Resource Group
+      templateLocation: URL of the file
+      csmFileLink: $(templateUrl.lin)
+      csmParametersFileLink: $(parametersUrl.lin)
+      deploymentMode: 'Incremental' 
 ...
