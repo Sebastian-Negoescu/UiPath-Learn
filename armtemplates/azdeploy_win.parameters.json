@@ -6,7 +6,12 @@
             "value": "sebinego"
         },
         "adminPassword": {
-            "value": "3SebiDev*****"
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/1e3572b9-ed28-4477-932c-8931c4d7cb56/resourceGroups/UiPath-Learn-KeyVault/providers/Microsoft.KeyVault/vaults/UiPath-Learn-KeyVault"
+                },
+                "secretName": "adminPassword"
+            }
         },
         "pipDnsName": {
             "value": "sebinegodns"

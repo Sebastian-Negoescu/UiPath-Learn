@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "keyVaultName": {
+            "value": "UiPath-Learn-KeyVault"
+        },
+        "tenantId": {
+            "value": "3ee06499-96f8-4542-bdf9-0cbc43d2d3ad"
+        },
+        "adAppId": {
+            "value": "5def806b-f8c6-423b-8eca-11be5f3499c6"
+        },
+        "secretName": {
+            "value": "adminPassword"
+        },
+        "secretValue": {
+            "value": "3SebiDev*****"
+        }
+    }
+}
