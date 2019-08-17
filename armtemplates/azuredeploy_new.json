@@ -197,7 +197,23 @@
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "apiVersion": "2019-03-01",
-            "name": ""
+            "name": "[concat(variables('vmName'), '/InstallWebServer')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName'))]"
+            ],
+            "location": "[parameters('location')]",
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.7",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplate/installWebServer.ps1"
+                    ],
+                    "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File InstallWebServer.ps1"
+                }
+            }
         }
     ],
     "outputs": {
