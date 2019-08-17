@@ -3,9 +3,6 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'Ubuntu-16.04'
-
 variables:
   location: 'West Europe'
   rgName: 'UiPath-Learn'
@@ -14,17 +11,23 @@ variables:
   parametersUrl: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_win.parameters.json'
 
 # Starting the Resource Creation phase
-steps:
-- task: AzureResourceGroupDeployment@2
-  name: win_deploy
-  displayName: "Deploying the Resources for Windows"
-  inputs:
-    azureSubscription: $(subscription)
-    resourceGroupName: $(rgName)
-    csmFileLink: $(templateUrl)
-    csmParametersFileLink: $(parametersUrl)
-    deployMentMode: 'Incremental'
-    location: $(location)
-    
+jobs:
+- job: deployment_windows
+  displayName: 'Deployment of Windows'
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  steps:
+  - task: AzureResourceGroupDeployment@2
+    name: win_deploy
+    displayName: "Deploying the Resources for Windows"
+    inputs:
+      azureSubscription: $(subscription)
+      resourceGroupName: $(rgName)
+      action: Create Or Update Resource Group
+      templateLocation: URL of the file
+      csmFileLink: $(templateUrl)
+      csmParametersFileLink: $(parametersUrl)
+      deployMentMode: 'Incremental'
+      location: $(location)    
 
 ...
