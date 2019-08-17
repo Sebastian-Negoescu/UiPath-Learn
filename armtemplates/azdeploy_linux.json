@@ -201,8 +201,13 @@
                 "type": "CustomScript",
                 "autoUpgradeMinorVersion": true,
                 "typeHandlerVersion": "2.0",
+                "settings": {
+                    "fileUris": [
+                        "https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/hello.sh"
+                    ]
+                },
                 "protectedSettings": {
-                    "commandToExecute": "sh 'touch ~/hello.txt && echo 'Hello from Custom Script' > ~/.hello.txt'"
+                    "commandToExecute": "sh hello.sh"
                 }
             }
         }

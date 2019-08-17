@@ -1,3 +1,3 @@
-#!/bin/bash
-touch ~/hello.txt
-echo "Hello from Custom Script on Linux!" > ~/hello.txt
+#!/bin/sh
+touch ~/helloSebi.txt
+echo "Hello Sebi!" > ~/helloSebi.txt
