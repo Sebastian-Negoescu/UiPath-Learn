@@ -11,11 +11,19 @@
         "adAppId": {
             "value": "5def806b-f8c6-423b-8eca-11be5f3499c6"
         },
-        "secretName": {
-            "value": "adminPassword"
-        },
-        "secretValue": {
-            "value": "3SebiDev*****"
+        "secretsObject": {
+            "value": {
+                "secrets": [
+                    {
+                        "secretName": "adminPassword",
+                        "secretValue": "3SebiDev*****"
+                    },
+                    {
+                        "secretName": "linuxSSHKey",
+                        "secretValue": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDu/D9HeE5TtIXXgohAHy86BFl5UtFJYkzwOqjggPf93RLzCSP1lYbX3ClD1d+7hMUPhBtBA85rkL5JFANsnjHY+ddzFREhDgSCCceLLBkcLhMZvcnvPlO95rm3kjBRjgBl5Wy1504QvZYvMjtVc1azDCUE7TiYz+H6NwRmigALkyWUctr2acFTAJHjitm0e4mcSAy/DI+gdO84lUIVId7XHbvSjh9bCzJf4we1tMrrh6Ida7sbA/7m1ZkeGDu79GBJ01ixRnmGiFiATVlhBjQqZd+y53uA+4XfzG70jOrbOPbgGRG51HEUAR3j6Z7B8TATMCa3RYF1OL/lxmAjqXR sebinegoescu@Sebastians-MacBook-Air.local"
+                    }
+                ]
+            }
         }
     }
 }

@@ -27,14 +27,8 @@
                 "description": "Service Principal that's able to connect to the Key Vault."
             }
         },
-        "secretName": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the Secret we are going to store."
-            }
-        },
-        "secretValue": {
-            "type": "string",
+        "secretsObject": {
+            "type": "object",
             "metadata": {
                 "description": "Value for the secret we're going to store."
             }
@@ -43,7 +37,7 @@
     "resources": [
         {
             "type": "Microsoft.KeyVault/vaults",
-            "apiVersion": "2018-02-14",
+            "apiVersion": "2016-10-01",
             "name": "[parameters('keyVaultName')]",
             "location": "[parameters('location')]",
             "properties": {
@@ -102,17 +96,20 @@
         {
             "type": "Microsoft.KeyVault/vaults/secrets",
             "apiVersion": "2016-10-01",
-            "name": "[concat(parameters('keyVaultName'), '/', parameters('secretName'))]",
+            "name": "[concat(parameters('keyVaultName'), '/', parameters('secretsObject').secrets[copyIndex()].secretName)]",
             "dependsOn": [
                 "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
             ],
             "location": "[parameters('location')]",
+            "copy": {
+                "name": "secretsCopy",
+                "count": "[length(parameters('secretsObject').secrets)]"
+            },
             "properties": {
-                "contentType": "securestring",
                 "attributes": {
                     "enabled": true
                 },
-                "value": "[parameters('secretValue')]"
+                "value": "[parameters('secretsObject').secrets[copyIndex()].secretValue]"
             }
         }
     ],
