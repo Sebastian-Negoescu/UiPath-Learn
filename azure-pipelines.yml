@@ -46,7 +46,7 @@ jobs:
       location: $(location)
       action: Create Or Update Resource Group
       templateLocation: URL of the file
-      csmFileLink: "{ templateUrl.lin }"
+      csmFileLink: "{{ templateUrl.lin }}"
       csmParametersFileLink: "{{ parametersUrl.lin }}"
       deploymentMode: 'Incremental' 
 ...
