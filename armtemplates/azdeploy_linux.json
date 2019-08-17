@@ -126,7 +126,7 @@
                             "publicIPAddress": {
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('pipName'))]"
                             },
-                            "privateIPAllocationMethod": "Static"
+                            "privateIPAllocationMethod": "Dynamic"
                         }
                     }
                 ]
@@ -185,6 +185,24 @@
                         "enabled": true,
                         "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))).primaryEndpoints.blob]"
                     }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2019-03-01",
+            "name": "[concat(variables('vmName'), '/TestingExtension')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName'))]"
+            ],
+            "location": "[parameters('location')]",
+            "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "autoUpgradeMinorVersion": true,
+                "typeHandlerVersion": "2.0",
+                "protectedSettings": {
+                    "commandToExecute": "sh 'touch ~/hello.txt && echo 'Hello from Custom Script' > ~/.hello.txt'"
                 }
             }
         }
