@@ -8,11 +8,11 @@ variables:
   rgName: 'UiPath-Learn'
   subscription: 'loginsp'
   templateUrl: 
-    win: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_win.json'
-    lin: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_linux.json'
+  - win: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_win.json'
+  - lin: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_linux.json'
   parametersUrl: 
-    win: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_win.parameters.json'
-    lin: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_linux.parameters.json'
+  - win: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_win.parameters.json'
+  - lin: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_linux.parameters.json'
 
 # Starting the Resource Creation phase
 jobs:
