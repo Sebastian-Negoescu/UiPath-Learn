@@ -1,0 +1,220 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "Username of the VM."
+            }
+        },
+        "adminPassword": {
+            "type": "string",
+            "metadata": {
+                "description": "Password for the VM."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all the resources."
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "allowedValues": [
+                "Standard_D2",
+                "Standard_D2_v2",
+                "Standard_D2s_v3"
+            ],
+            "defaultValue": "Standard_D2s_v3"
+        },
+        "pipDnsName": {
+            "type": "string",
+            "metadata": {
+                "description": "Unique DNS Name for the Public IP."
+            }
+        },
+        "_prefix": {
+            "type": "string",
+            "defaultValue": "SebiNego",
+            "metadata": {
+                "description": "Prefix for the Storage Account name."
+            }
+        }
+    },
+    "variables": {
+        "vnet": {
+            "name": "[toLower(concat(resourceGroup().name, '-vnet'))]",
+            "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet').name)]",
+            "addressPrefixes": "10.0.0.0/16"
+        },
+        "subnet": {
+            "name": "[toLower('Subnet-1')]",
+            "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet').name, variables('subnet').name)]",
+            "addressPrefix": "10.0.0.0/24"
+        },
+        "storageAccount": {
+            "name": "[toLower(concat(parameters('_prefix'), 'stacct'))]",
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "id": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name)]"
+        },
+        "vm": {
+            "computerName": "sebinegovsts",
+            "id": "[resourceId('Microsoft.Compute/virtualMachines', variables('vm').computerName)]"
+        },
+        "nic": {
+            "name": "[concat(variables('vm').computerName, '-nic')]",
+            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nic').name)]"
+        },
+        "pip": {
+            "name": "[concat(variables('nic').name, '-pip')]",
+            "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('pip').name)]"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-04-01",
+            "name": "[variables('storageAccount').name]",
+            "dependsOn": [],
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "[variables('storageAccount').sku.name]"
+            },
+            "kind": "Storage",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2019-04-01",
+            "name": "[variables('vnet').name]",
+            "location": "[parameters('location')]",
+            "dependsOn": [],
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": ["[variables('vnet').addressPrefixes]"]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('subnet').name]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnet').addressPrefix]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2019-04-01",
+            "name": "[variables('pip').name]",
+            "location": "[parameters('location')]",
+            "dependsOn": [],
+            "properties": {
+                "dnsSettings": {
+                    "domainNameLabel": "[parameters('pipDnsName')]"
+                },
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic"
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2019-04-01",
+            "name": "[variables('nic').name]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[variables('pip').id]",
+                "[variables('vnet').id]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipConfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[variables('subnet')]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[variables('pip').id]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2019-03-01",
+            "name": "[variables('vm').computerName]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[variables('storageAccount').id]",
+                "[variables('nic').id]"
+            ],
+            "properties": {
+                "osProfile": {
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]",
+                    "computerName": "[variables('vm').computerName]",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": false
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[variables('nic').id]"
+                        }
+                    ]
+                },
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsDesktop",
+                        "offer": "Windows-10",
+                        "sku": "rs5-pro",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "createOption": "FromImage"
+                    },
+                    "dataDisks": [
+                        {
+                            "diskSizeGB": 1023,
+                            "createOption": "Empty",
+                            "lun": 0
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[reference(variables('storageAccount').id).primaryEndpoints.blob]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "hostname": {
+            "type": "string",
+            "value": "[reference(variables('pip').name).dnsSettings.fqdn]"
+        },
+        "diagUri": {
+            "type": "string",
+            "value": "[reference(variables('storageAccount').id).primaryEndpoints.blob]"
+        }
+    }
+}
