@@ -7,12 +7,10 @@ variables:
   location: 'West Europe'
   rgName: 'UiPath-Learn'
   subscription: 'loginsp'
-  templateUrl: 
-    - win: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_win.json'
-    - lin: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_linux.json'
-  parametersUrl: 
-    - win: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_win.parameters.json'
-    - lin: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_linux.parameters.json'
+  templateUrl_win: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_win.json'
+  templateUrl_lin: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_linux.json'
+  parametersUrl_win: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_win.parameters.json'
+  parametersUrl_lin: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_linux.parameters.json'
 
 # Starting the Resource Creation phase
 jobs:
@@ -29,8 +27,8 @@ jobs:
       resourceGroupName: $(rgName)
       action: Create Or Update Resource Group
       templateLocation: URL of the file
-      csmFileLink: "{{ templateUrl.win }}"
-      csmParametersFileLink: "{{ parametersUrl.win }}"
+      csmFileLink: $(templateUrl_win)
+      csmParametersFileLink: $(parametersUrl_win)
       deployMentMode: 'Incremental'
       location: $(location)    
 - job: deployment_linux
@@ -46,7 +44,7 @@ jobs:
       location: $(location)
       action: Create Or Update Resource Group
       templateLocation: URL of the file
-      csmFileLink: "{{ templateUrl.lin }}"
-      csmParametersFileLink: "{{ parametersUrl.lin }}"
+      csmFileLink: $(templateUrl_lin)
+      csmParametersFileLink: $(parametersUrl_lin)
       deploymentMode: 'Incremental' 
 ...
