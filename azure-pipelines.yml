@@ -13,9 +13,21 @@ variables:
   parametersUrl_lin: 'https://raw.githubusercontent.com/Sebastian-Negoescu/UiPath-Learn/master/armtemplates/azdeploy_linux.parameters.json'
 
 # Starting the Resource Creation phase || Testing parallelism with Stages
+- stage: just_a_mimmick
+  displayName: "Am I parallel...?"
+  jobs:
+  - job: parallel_try
+    displayName: "Parallel Job try"
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - script: 'echo "Hello World!"'
+      name: "Hello_World"
+
 stages:
 - stage: windows_stage
   displayName: 'Windows Stage'
+  depends_on: just_a_mimmick
   jobs:
   - job: deployment_windows
     displayName: 'Deployment of Windows'
@@ -37,6 +49,7 @@ stages:
 
 - stage: linux_stage
   displayName: 'Linux Stage'
+  depends_on: just_a_mimmick
   jobs:  
   - job: deployment_linux
     displayName: 'Deployment of Linux'
@@ -55,15 +68,5 @@ stages:
         csmParametersFileLink: $(parametersUrl_lin)
         deploymentMode: 'Incremental' 
 
-- stage: just_a_mimmick
-  displayName: "Am I parallel...?"
-  dependsOn: windows_stage
-  jobs:
-  - job: parallel_try
-    displayName: "Parallel Job try"
-    pool:
-      vmImage: 'Ubuntu-16.04'
-    steps:
-    - script: 'echo "Hello World!"'
-      name: "Hello_World"
+
 ...
