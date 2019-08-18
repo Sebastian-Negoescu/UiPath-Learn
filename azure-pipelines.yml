@@ -57,6 +57,7 @@ stages:
 
 - stage: just_a_mimmick
   displayName: "Am I parallel...?"
+  dependsOn: windows_stage
   jobs:
   - job: parallel_try
     displayName: "Parallel Job try"
