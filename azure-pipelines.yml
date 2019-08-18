@@ -55,4 +55,14 @@ stages:
         csmParametersFileLink: $(parametersUrl_lin)
         deploymentMode: 'Incremental' 
 
+- stage: just_a_mimmick
+  displayName: "Am I parallel...?"
+  jobs:
+  - job: parallel_try
+    displayName: "Parallel Job try"
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - script: 'echo "Hello World!"'
+      name: "Hello_World"
 ...
