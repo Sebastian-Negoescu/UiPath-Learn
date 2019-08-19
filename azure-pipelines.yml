@@ -34,7 +34,7 @@ stages:
   - job: deployment_windows
     displayName: 'Deployment of Windows'
     pool:
-      name: CPX-AGAYHMYJY7R
+      name: default
     steps:
     - task: AzureResourceGroupDeployment@2
       name: win_deploy
