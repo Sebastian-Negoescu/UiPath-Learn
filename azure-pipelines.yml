@@ -34,7 +34,7 @@ stages:
   - job: deployment_windows
     displayName: 'Deployment of Windows'
     pool:
-      name: default
+      name: 'Default'
     steps:
     - task: AzureResourceGroupDeployment@2
       name: win_deploy
