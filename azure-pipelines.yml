@@ -34,7 +34,7 @@ stages:
   - job: deployment_windows
     displayName: 'Deployment of Windows'
     pool:
-      vmImage: 'Ubuntu-16.04'
+      vmImage: 'CPX-AGAYHMYJY7R'
     steps:
     - task: AzureResourceGroupDeployment@2
       name: win_deploy
